@@ -1544,24 +1544,9 @@ function displayContracts(year) {
     
     // 필터 적용
     const filterName = document.getElementById('filter-name').value;
-    const filterType = document.getElementById('filter-type').value;
-    const filterCompany = document.getElementById('filter-company').value;
-    const filterStatus = document.getElementById('filter-status').value;
     
     if (filterName) {
         filteredContracts = filteredContracts.filter(contract => contract.name === filterName);
-    }
-    
-    if (filterType) {
-        filteredContracts = filteredContracts.filter(contract => contract.type === filterType);
-    }
-    
-    if (filterCompany) {
-        filteredContracts = filteredContracts.filter(contract => contract.company === filterCompany);
-    }
-    
-    if (filterStatus) {
-        filteredContracts = filteredContracts.filter(contract => contract.status === filterStatus);
     }
     
     // 계약 목록 테이블 업데이트
@@ -1615,7 +1600,7 @@ function updateContractTable(contracts) {
     // 계약이 없는 경우
     if (contracts.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = '<td colspan="10" class="no-data">계약 정보가 없습니다.</td>';
+        row.innerHTML = '<td colspan="7" class="no-data">계약 정보가 없습니다.</td>';
         tableBody.appendChild(row);
         
         // 페이지네이션 숨김
@@ -1638,16 +1623,6 @@ function updateContractTable(contracts) {
     currentPageContracts.forEach((contract, index) => {
         const row = document.createElement('tr');
         
-        // 계약 상태에 따른 스타일 클래스
-        let statusClass = '';
-        if (contract.status === '법무검토 완료') {
-            statusClass = 'status-review';
-        } else if (contract.status === '체결 진행중') {
-            statusClass = 'status-progress';
-        } else if (contract.status === '체결 완료') {
-            statusClass = 'status-complete';
-        }
-        
         // 파일 아이콘 HTML
         let fileIconHtml = '-';
         if (contract.file) {
@@ -1668,10 +1643,7 @@ function updateContractTable(contracts) {
                     ${contract.name}
                 </a>
             </td>
-            <td>${contract.type || '-'}</td>
-            <td>${contract.company || '-'}</td>
             <td>${formatDate(contract.date)}</td>
-            <td class="${statusClass}">${contract.status || '-'}</td>
             <td>${fileIconHtml}</td>
             <td>
                 <button class="edit-btn" onclick="showEditContractModal('${contract.id}', '${selectedYear}'); return false;">
@@ -1831,9 +1803,6 @@ function applyFilters() {
 function resetFilters() {
     // 필터 초기화
     document.getElementById('filter-name').value = '';
-    document.getElementById('filter-type').value = '';
-    document.getElementById('filter-company').value = '';
-    document.getElementById('filter-status').value = '';
     
     // 검색어 초기화
     document.getElementById('search-input').value = '';
