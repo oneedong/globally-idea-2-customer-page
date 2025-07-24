@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KB증권 계약 관리 시스템 - 고객사용</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* 로그인 컨테이너 중앙 정렬 및 최적화 */
+        .login-container {
+            justify-content: center;
+            padding: 0 20px;
+        }
+        
+        /* 배경 이미지 최적화 */
+        .login-page {
+            background-position: center;
+            background-size: cover; /* 배경 이미지 꽉 차게 설정 */
+        }
+        
+        /* 로그인 박스 크기 최적화 */
+        .login-box {
+            max-width: 350px;
+            padding: 25px 20px;
+        }
+        
+        /* 고객사용 태그 스타일 */
+        .customer-tag {
+            display: inline-block;
+            background-color: #ffb300;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        /* 2단계 인증 모달 스타일 */
+        .verification-container {
+            text-align: center;
+        }
+        
+        .verification-code-input {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .verification-code-input input {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            text-align: center;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .verification-timer {
+            color: #f44336;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .resend-code-btn {
+            background: none;
+            border: none;
+            color: #1e88e5;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-bottom: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-logo">
+                    <img src="images/KB_logo_cut_trim.png" alt="KB증권 로고">
+                    <h1>세일즈 계약 관리 시스템 <span class="customer-tag">고객사용</span></h1>
+                </div>
+                <form class="login-form" id="login-form">
+                    <div class="input-group">
+                        <input type="text" id="login-id" placeholder="아이디" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" placeholder="비밀번호" required>
+                    </div>
+                    <div class="login-options">
+                        <div class="remember-id">
+                            <input type="checkbox" id="remember-id">
+                            <label for="remember-id">아이디 저장</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="login-btn">로그인</button>
+                </form>
+                
+                <div class="contract-check-section">
+                    <h3>계약 상태 조회</h3>
+                    <div class="contract-check-form">
+                        <input type="text" id="quick-contract-number" placeholder="계약번호 입력" required>
+                        <button type="button" class="check-contract-btn">조회</button>
+                    </div>
+                </div>
+                
+                <div class="login-footer">
+                    <p>Copyright © S&T 글로벌리조. All Right Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2단계 인증 모달 -->
+    <div id="verification-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-verification-modal">&times;</span>
+            <h2>2단계 인증</h2>
+            <div class="verification-container">
+                <p>고객사 담당자 휴대폰으로 인증번호가 발송되었습니다.</p>
+                <p>수신된 6자리 인증번호를 입력해주세요.</p>
+                
+                <div class="verification-code-input">
+                    <input type="text" maxlength="1" class="code-digit" data-index="1" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="code-digit" data-index="2" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="code-digit" data-index="3" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="code-digit" data-index="4" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="code-digit" data-index="5" pattern="[0-9]">
+                    <input type="text" maxlength="1" class="code-digit" data-index="6" pattern="[0-9]">
+                </div>
+                
+                <div class="verification-timer">
+                    <span id="timer">03:00</span> 남았습니다
+                </div>
+                
+                <button type="button" class="resend-code-btn" id="resend-code-btn">인증번호 재발송</button>
+                
+                <button type="button" class="login-btn" id="verify-btn">인증하기</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 계약 상태 조회 모달 -->
+    <div id="contract-check-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="close-contract-check-modal">&times;</span>
+            <h2>계약 상태 조회</h2>
+            <div id="contract-check-result">
+                <h3>계약 정보</h3>
+                <div id="contract-info"></div>
+                
+                <div class="progress-bar-container" style="margin-top: 30px;">
+                    <div class="progress-step">
+                        <div class="step-circle" id="step1">1</div>
+                        <div class="step-name">법무검토 완료</div>
+                    </div>
+                    <div class="progress-line" id="line1"></div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="step2">2</div>
+                        <div class="step-name">체결 진행중</div>
+                    </div>
+                    <div class="progress-line" id="line2"></div>
+                    <div class="progress-step">
+                        <div class="step-circle" id="step3">3</div>
+                        <div class="step-name">체결 완료</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

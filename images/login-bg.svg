@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFDE59;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFB800;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.1" />
+      <stop offset="50%" style="stop-color:#FFFFFF;stop-opacity:0.05" />
+      <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grad1)" />
+  
+  <!-- 그래프 패턴 -->
+  <g opacity="0.15">
+    <!-- 상승 그래프 라인 -->
+    <polyline points="0,800 200,750 400,780 600,720 800,650 1000,680 1200,600 1400,550 1600,500 1800,450 1920,400" 
+              stroke="#000" stroke-width="3" fill="none" />
+    
+    <!-- 하락 그래프 라인 -->
+    <polyline points="0,600 200,650 400,620 600,700 800,720 1000,680 1200,750 1400,780 1600,750 1800,800 1920,820" 
+              stroke="#000" stroke-width="3" fill="none" />
+              
+    <!-- 캔들스틱 차트 요소들 -->
+    <rect x="100" y="500" width="20" height="80" fill="#FF3B30" />
+    <rect x="300" y="550" width="20" height="60" fill="#4CD964" />
+    <rect x="500" y="520" width="20" height="40" fill="#FF3B30" />
+    <rect x="700" y="580" width="20" height="70" fill="#4CD964" />
+    <rect x="900" y="530" width="20" height="50" fill="#FF3B30" />
+    <rect x="1100" y="560" width="20" height="80" fill="#4CD964" />
+    <rect x="1300" y="510" width="20" height="60" fill="#FF3B30" />
+    <rect x="1500" y="570" width="20" height="50" fill="#4CD964" />
+    <rect x="1700" y="540" width="20" height="70" fill="#FF3B30" />
+    
+    <!-- 수직선 (캔들스틱 심지) -->
+    <line x1="110" y1="480" x2="110" y2="600" stroke="#000" stroke-width="2" />
+    <line x1="310" y1="530" x2="310" y2="630" stroke="#000" stroke-width="2" />
+    <line x1="510" y1="500" x2="510" y2="580" stroke="#000" stroke-width="2" />
+    <line x1="710" y1="550" x2="710" y2="670" stroke="#000" stroke-width="2" />
+    <line x1="910" y1="510" x2="910" y2="600" stroke="#000" stroke-width="2" />
+    <line x1="1110" y1="540" x2="1110" y2="660" stroke="#000" stroke-width="2" />
+    <line x1="1310" y1="490" x2="1310" y2="590" stroke="#000" stroke-width="2" />
+    <line x1="1510" y1="550" x2="1510" y2="640" stroke="#000" stroke-width="2" />
+    <line x1="1710" y1="520" x2="1710" y2="630" stroke="#000" stroke-width="2" />
+  </g>
+  
+  <!-- 격자 패턴 -->
+  <g opacity="0.1">
+    <!-- 수평선 -->
+    <line x1="0" y1="200" x2="1920" y2="200" stroke="#000" stroke-width="1" />
+    <line x1="0" y1="400" x2="1920" y2="400" stroke="#000" stroke-width="1" />
+    <line x1="0" y1="600" x2="1920" y2="600" stroke="#000" stroke-width="1" />
+    <line x1="0" y1="800" x2="1920" y2="800" stroke="#000" stroke-width="1" />
+    <line x1="0" y1="1000" x2="1920" y2="1000" stroke="#000" stroke-width="1" />
+    
+    <!-- 수직선 -->
+    <line x1="200" y1="0" x2="200" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="400" y1="0" x2="400" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="600" y1="0" x2="600" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="800" y1="0" x2="800" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="1000" y1="0" x2="1000" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="1200" y1="0" x2="1200" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="1400" y1="0" x2="1400" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="1600" y1="0" x2="1600" y2="1080" stroke="#000" stroke-width="1" />
+    <line x1="1800" y1="0" x2="1800" y2="1080" stroke="#000" stroke-width="1" />
+  </g>
+  
+  <!-- 빛 효과 -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#grad2)" />
+  
+  <!-- 장식용 원형 -->
+  <circle cx="960" cy="540" r="400" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.1" />
+  <circle cx="960" cy="540" r="300" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.1" />
+  <circle cx="960" cy="540" r="200" fill="none" stroke="#FFFFFF" stroke-width="2" opacity="0.1" />
+</svg> 
