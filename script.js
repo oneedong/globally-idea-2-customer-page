@@ -66,8 +66,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 테스트용 고객사 계정 생성 (실제 서비스에서는 제거)
 function createTestCustomerAccounts() {
-    // 이미 생성된 경우 건너뛰기
-    if (localStorage.getItem('kbSecCustomerAccountsCreated')) return;
+    // 기존 데이터 삭제
+    localStorage.removeItem('kbSecCustomerAccountsCreated');
+    localStorage.removeItem('kbSecCustomerUsers');
     
     const testAccounts = [
         {
