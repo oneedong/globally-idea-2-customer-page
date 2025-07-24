@@ -344,21 +344,20 @@ function addContract() {
     
     // 폼 데이터 가져오기
     const name = document.getElementById('add-contract-name').value;
-    const type = document.getElementById('add-contract-type').value;
-    const company = document.getElementById('add-contract-company').value;
-    const date = document.getElementById('add-contract-date').value;
-    const status = document.getElementById('add-contract-status').value;
     const details = document.getElementById('add-contract-details').value;
     const fileInput = document.getElementById('contract-file-input');
     
     // 필수 입력 확인
-    if (!name || !company || !date) {
-        alert('계약명, 거래 상대방, 체결일자는 필수 입력 항목입니다.');
+    if (!name) {
+        alert('계약명은 필수 입력 항목입니다.');
         return;
     }
     
-    // 계약 날짜에서 연도 추출
-    const contractYear = new Date(date).getFullYear();
+    // 현재 날짜를 게시일자로 설정
+    const currentDate = new Date().toISOString().split('T')[0];
+    
+    // 현재 연도 추출
+    const contractYear = new Date().getFullYear();
     
     // 해당 연도의 계약 배열이 없으면 초기화
     if (!contracts[contractYear]) {
@@ -366,7 +365,7 @@ function addContract() {
     }
     
     // 계약 번호 생성
-    const contractNumber = generateContractNumber(date);
+    const contractNumber = generateContractNumber(currentDate);
     
     console.log('파일 입력 확인:', fileInput ? '있음' : '없음');
     console.log('파일 존재 확인:', fileInput && fileInput.files && fileInput.files.length > 0 ? '있음' : '없음');
@@ -383,12 +382,12 @@ function addContract() {
         id: contractId,
         contractNumber: contractNumber,
         name: name,
-        type: type,
-        company: company,
-        date: date,
-        status: status,
+        type: '기타',
+        company: currentUser.companyName,
+        date: currentDate,
+        status: '체결 완료',
         details: details,
-        department: currentUser.department,
+        department: '고객사',
         createdBy: currentUser.id,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -496,21 +495,23 @@ function updateContract() {
     
     // 폼 데이터 가져오기
     const name = document.getElementById('add-contract-name').value;
-    const type = document.getElementById('add-contract-type').value;
-    const company = document.getElementById('add-contract-company').value;
-    const date = document.getElementById('add-contract-date').value;
-    const status = document.getElementById('add-contract-status').value;
     const details = document.getElementById('add-contract-details').value;
     const fileInput = document.getElementById('contract-file-input');
     
     // 필수 입력 확인
-    if (!name || !company || !date) {
-        alert('계약명, 거래 상대방, 체결일자는 필수 입력 항목입니다.');
+    if (!name) {
+        alert('계약명은 필수 입력 항목입니다.');
         return;
     }
     
+    // 현재 날짜 - 파일이 변경된 경우에만 게시일자 업데이트
+    let postDate = oldContract.date;
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        postDate = new Date().toISOString().split('T')[0];
+    }
+    
     // 날짜에서 연도 추출
-    const newYear = new Date(date).getFullYear();
+    const newYear = new Date(postDate).getFullYear();
     
     // 파일 데이터 처리
     if (fileInput && fileInput.files && fileInput.files.length > 0) {
@@ -540,10 +541,7 @@ function updateContract() {
             const updatedContract = {
                 ...oldContract,
                 name: name,
-                type: type,
-                company: company,
-                date: date,
-                status: status,
+                date: postDate,
                 details: details,
                 file: fileData,
                 updatedAt: new Date().toISOString()
@@ -566,10 +564,6 @@ function updateContract() {
         const updatedContract = {
             ...oldContract,
             name: name,
-            type: type,
-            company: company,
-            date: date,
-            status: status,
             details: details,
             updatedAt: new Date().toISOString()
         };
@@ -697,11 +691,7 @@ function deleteContract(contractId, year) {
         
         const contract = contracts[year][contractIndex];
         
-        // 관리자이거나 자신의 부서 계약만 삭제 가능
-        if (!currentUser.isAdmin && contract.department !== currentUser.department) {
-            alert('권한이 없습니다.');
-            return;
-        }
+        // 고객사 사용자는 모든 계약을 삭제할 수 있도록 권한 체크 제거
         
         if (confirm('정말로 이 계약을 삭제하시겠습니까?')) {
             console.log('계약 삭제 확인됨');
@@ -1168,16 +1158,12 @@ function saveContractFromModal(originalContract, year) {
     try {
         // 폼 데이터 가져오기
         const name = document.getElementById('add-contract-name').value;
-        const type = document.getElementById('add-contract-type').value;
-        const company = document.getElementById('add-contract-company').value;
-        const date = document.getElementById('add-contract-date').value;
-        const status = document.getElementById('add-contract-status').value;
         const details = document.getElementById('add-contract-details').value;
         const fileInput = document.getElementById('contract-file-input');
         
         // 필수 입력 확인
-        if (!name || !company || !date) {
-            alert('계약명, 거래 상대방, 체결일자는 필수 입력 항목입니다.');
+        if (!name) {
+            alert('계약명은 필수 입력 항목입니다.');
             return;
         }
         
@@ -1185,10 +1171,6 @@ function saveContractFromModal(originalContract, year) {
         const savedContract = {
             ...originalContract,
             name: name,
-            type: type,
-            company: company,
-            date: date,
-            status: status,
             details: details,
             savedAt: new Date().toISOString()
         };
@@ -1262,10 +1244,6 @@ function tempSaveContract() {
     
     // 폼 데이터 가져오기
     const name = document.getElementById('add-contract-name').value;
-    const type = document.getElementById('add-contract-type').value;
-    const company = document.getElementById('add-contract-company').value;
-    const date = document.getElementById('add-contract-date').value;
-    const status = document.getElementById('add-contract-status').value;
     const details = document.getElementById('add-contract-details').value;
     const fileInput = document.getElementById('contract-file-input');
     
@@ -1276,12 +1254,12 @@ function tempSaveContract() {
     const tempContract = {
         id: contractId,
         name: name || '(제목 없음)',
-        type: type || '',
-        company: company || '',
-        date: date || '',
-        status: status || '',
+        type: '기타',
+        company: currentUser.companyName,
+        date: new Date().toISOString().split('T')[0],
+        status: '체결 완료',
         details: details || '',
-        department: currentUser.department,
+        department: '고객사',
         createdAt: new Date().toISOString(),
         isTemp: true
     };
@@ -1407,10 +1385,6 @@ function checkLogin() {
 function showAddContractModal() {
     // 모달 초기화
     document.getElementById('add-contract-form').reset();
-    
-    // 오늘 날짜 설정
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('add-contract-date').value = today;
     
     // 파일 업로드 영역 초기화
     const fileArea = document.getElementById('add-contract-file-area');
@@ -1835,10 +1809,6 @@ function showEditContractModal(contractId, year) {
     
     // 폼 데이터 설정
     document.getElementById('add-contract-name').value = contract.name || '';
-    document.getElementById('add-contract-type').value = contract.type || '매매계약';
-    document.getElementById('add-contract-company').value = contract.company || '';
-    document.getElementById('add-contract-date').value = contract.date ? new Date(contract.date).toISOString().split('T')[0] : '';
-    document.getElementById('add-contract-status').value = contract.status || '법무검토 완료';
     document.getElementById('add-contract-details').value = contract.details || '';
     
     // 파일 업로드 영역 초기화
